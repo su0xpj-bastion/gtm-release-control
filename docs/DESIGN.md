@@ -83,6 +83,10 @@ Triggered automatically when post-deploy smoke tests fail, or manually via `work
 3. Deploy with `RunLocalTests`, then write a ledger entry.
 4. Open a revert PR so `main` matches production again. Otherwise the next deploy re-ships the bad change.
 
+**Rollback drill (fault injection):** set the repo variable `SMOKE_TEST_CLASSES=DoesNotExist`, then merge a
+change. The deploy succeeds, smoke tests fail, and the full rollback path runs. Unset the variable afterward.
+No code change is needed to rehearse it.
+
 **What rollback cannot undo**, and how it's handled:
 
 - **Data** written while the bad version was live. This is why revenue-object changes are `human_in_loop`.
@@ -113,7 +117,10 @@ decided about, so each is a candidate for a new rule.
 
 ## Setup
 
+For a live demo on a free Developer Edition org, run [`scripts/bootstrap-demo.sh`](../scripts/bootstrap-demo.sh).
+It walks through each step below and prompts for your values.
+
 1. Create a Dev Hub and a production connected app (JWT). Store `SF_DEVHUB_*` and `SF_PROD_*` secrets.
 2. Create a GitHub App for the classifier. Set `CLASSIFIER_APP_ID`, `CLASSIFIER_APP_KEY`, and `CLASSIFIER_ACTOR`.
 3. Add the `ANTHROPIC_API_KEY` secret.
-4. Run `terraform apply` in `infra/`.
+4. Run `terraform apply` in `infra/`, or step 9 of the bootstrap script for a demo repo.
