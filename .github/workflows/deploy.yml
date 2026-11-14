@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: write        # push to the evidence-ledger branch
-  pull-requests: read
+  pull-requests: write   # rollback.yml (called below) opens a revert PR; callees cannot exceed caller
   issues: write
   actions: read
 
